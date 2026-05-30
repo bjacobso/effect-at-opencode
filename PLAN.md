@@ -74,24 +74,33 @@ Bonus found while freezing: the OTel "annotate with a string" pattern is literal
       (configurable corner/scale/margin), speaker audio preserved, aligned via shared 00:00.
 - [x] **Verified end-to-end** against a synthetic stand-in clip → produced a
       1920×1080 composite with audio and the PiP overlay in the corner.
-- [ ] Obtain the real speaker video (YouTube `hY279-A2fC4`) — confirm rights/usage.
-      Then: `node scripts/splice.mjs <speaker-video.mp4>` → `build/final.mp4`.
-- [ ] Spot-check sync at each section boundary.
+- [~] Final render **deferred by decision (2026-05-30): pipeline is enough.**
+      When a rights-cleared speaker video is available, run
+      `node scripts/splice.mjs <speaker-video.mp4>` → `build/final.mp4` and
+      spot-check sync at each section boundary. Layout confirmed: **PiP
+      bottom-right** (the verified default — no script change needed).
 
 ## Phase 5 — Polish & ship
 
-- [ ] Review transitions and any spots where the speaker references the screen.
-- [ ] Publish deck (`slidev build` static site) + final video; link both from README.
+- [~] Publishing **deferred by decision (2026-05-30): don't publish yet.**
+      Static site builds with `cd slides && npm run build` (→ `slides/dist/`)
+      whenever we choose to host it.
+- [ ] Review transitions / spots where the speaker references the screen
+      (do this against the real video, once supplied).
 - [ ] (Per the tweet) optionally assign follow-ups to @kitlangton in Jira. 😄
 
 ---
 
-## Open questions
+## Decisions (2026-05-30)
 
-- **Layout:** slides full-frame with speaker PiP, or true side-by-side split?
-- **Speaker video source:** download permitted, or screen-capture / re-record?
-- **Tooling for splice:** ffmpeg-only, or an editor (DaVinci/Premiere) for finer
-  cuts around screen-reference moments?
+- **Layout:** ✅ slides full-frame with speaker **PiP bottom-right** (~26% width).
+- **Speaker video / final render:** ⏸ deferred — pipeline is enough for now;
+  user will supply a rights-cleared video later.
+- **Publishing:** ⏸ deferred — don't publish yet.
+- **Splice tooling:** ffmpeg-only (`scripts/splice.mjs`), verified working.
+
+## Still open
+
 - **Effect v4 callouts:** how much to lean on `.context/effect-v4` to show the
   exact `unstable/*` APIs opencode targets vs. keeping slides opencode-only.
 
