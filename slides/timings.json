@@ -1,0 +1,23 @@
+{
+  "$comment": "Slide -> transcript cue map for splicing the deck over the speaker video. 'start' is the talk timestamp (HH:MM:SS) where the slide should appear. Index is 0-based, matching slides.md order. Timestamps are approximate (see ../transcript.md).",
+  "source": "https://www.youtube.com/watch?v=hY279-A2fC4",
+  "slides": [
+    { "index": 0,  "title": "Title", "start": "00:00:00" },
+    { "index": 1,  "title": "Why the rewrite? (section)", "start": "00:01:08" },
+    { "index": 2,  "title": "At 8M MAU, cut corners reappear", "start": "00:01:08" },
+    { "index": 3,  "title": "The AI flip (section)", "start": "00:03:06" },
+    { "index": 4,  "title": "Boilerplate inverted", "start": "00:04:52" },
+    { "index": 5,  "title": "The five patterns", "start": "00:07:31" },
+    { "index": 6,  "title": "1 · Schema & branded types", "start": "00:08:00" },
+    { "index": 7,  "title": "Branded types: unrepresentable bad states", "start": "00:09:28" },
+    { "index": 8,  "title": "2 · Services & layers", "start": "00:11:45" },
+    { "index": 9,  "title": "Swap the implementation", "start": "00:13:43" },
+    { "index": 10, "title": "3 · PubSub & Streams", "start": "00:15:07" },
+    { "index": 11, "title": "4 · OpenTelemetry tracing", "start": "00:17:48" },
+    { "index": 12, "title": "The OTel feedback loop", "start": "00:21:01" },
+    { "index": 13, "title": "5 · Strictly-typed HTTP server", "start": "00:21:49" },
+    { "index": 14, "title": "Additive OpenAPI in CI", "start": "00:24:08" },
+    { "index": 15, "title": "It clicks after a couple months", "start": "00:24:45" },
+    { "index": 16, "title": "Thanks", "start": "00:25:10" }
+  ]
+}

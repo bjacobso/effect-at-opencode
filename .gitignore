@@ -1,0 +1,7 @@
+# Regenerable render artifacts (slidev PNG export, slide track, final video)
+build/
+
+# Node
+node_modules/
+*.log
+.DS_Store

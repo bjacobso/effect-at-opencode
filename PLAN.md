@@ -18,15 +18,15 @@ over Dax Raad's speaker video so the slides track the talk.
 - [x] `transcript.md` — full timestamped transcript
 - [x] `overview.md` — distilled five-pattern summary with code mappings
 - [x] `README.md`, `PLAN.md`
-- [ ] Initial commit pinning submodule SHAs
+- [x] Initial commit pinning submodule SHAs (`f1e8811`)
 
 Submodules are pinned so every slide's `file:line` reference stays stable:
 - opencode → `ac8e686` (latest-3028)
 - effect-smol → `1fdd9ae` (@effect/ai-anthropic@4.0.0-beta.74)
 
-## Phase 1 — Pin slides to ground-truth code
+## Phase 1 — Pin slides to ground-truth code ✅
 
-Verify and freeze the exact files/lines each slide cites (already scouted):
+Verified and froze the exact files/lines each slide cites:
 
 | # | Pattern | File (under `.context/opencode/packages/opencode/src/`) | Anchor |
 | --- | --- | --- | --- |
@@ -36,45 +36,51 @@ Verify and freeze the exact files/lines each slide cites (already scouted):
 | 4 | OpenTelemetry tracing | `cli/cmd/run/otel.ts` + `withSpan` call sites | run-span tracer; auto-instrumentation + agent OTel feedback loop |
 | 5 | Strictly-typed HTTP server | `server/routes/instance/httpapi/api.ts` + `groups/*.ts` | `HttpApi.make(...).addHttpApi(...)`, additive `openapi.json` in CI |
 
-- [ ] Re-read each anchor, copy the exact snippet to embed, record final line numbers.
-- [ ] Note the matching Effect v4 API in `.context/effect-v4` for each (e.g. `effect/unstable/httpapi`, `effect/unstable/process`, `Schema.brand`, `PubSub`, `Stream`).
+- [x] Re-read each anchor, copy the exact snippet to embed, record final line numbers.
+- [x] Note the matching Effect v4 API for each (`effect/unstable/httpapi`, `effect/unstable/process`, `Schema.brand`, `PubSub`, `Stream`) — confirmed opencode targets v4 idioms.
 
-## Phase 2 — Author the Slidev deck
+Bonus found while freezing: the OTel "annotate with a string" pattern is literally
+`Effect.fn("Git.run")` / `Effect.fn("Bus.state")` — used as the tracing-slide snippet.
 
-- [ ] Scaffold Slidev: `slides/` with `npm create slidev` (or `slides.md` + theme).
-- [ ] Deck outline (one section per transcript chapter):
+## Phase 2 — Author the Slidev deck ✅
+
+- [x] Scaffold Slidev → `slides/` (`slides.md`, `package.json`, seriph theme).
+- [x] Deck authored — 17 slides, one section per transcript chapter:
   1. Title — "Effect at OpenCode" / Dax Raad / Effect Miami 2026
   2. Why the rewrite — 8M MAU, correctness, abort signals (`[01:08]`–`[02:38]`)
   3. The AI flip — verbosity as guardrail, 3× files, token spend (`[03:06]`–`[07:08]`)
-  4. Schema & branded types — `provider/schema.ts` (`[08:00]`–`[11:03]`)
+  4. Schema & branded types — `provider/{schema,provider}.ts` (`[08:00]`–`[11:03]`)
   5. Services & layers — `git/index.ts`, swappable libgit2 + test layers (`[11:45]`–`[14:40]`)
   6. PubSub & Streams — `bus/index.ts` (`[15:07]`–`[17:14]`)
-  7. OpenTelemetry — auto-spans + agent feedback loop (`[17:48]`–`[21:40]`)
-  8. Typed HTTP server — `httpapi/`, additive OpenAPI (`[21:49]`–`[24:30]`)
+  7. OpenTelemetry — `Effect.fn(...)` auto-spans + agent feedback loop (`[17:48]`–`[21:40]`)
+  8. Typed HTTP server — `httpapi/groups/provider.ts` + `api.ts`, additive OpenAPI (`[21:49]`–`[24:30]`)
   9. Close — risky migration, but going well (`[24:45]`)
-- [ ] Use Shiki code blocks with line highlighting; cite `repo path:line` on each.
-- [ ] Add per-slide presenter notes from the transcript for sync timing.
-- [ ] Record a `timings.json` mapping slide index → transcript timestamp.
+- [x] Shiki code blocks with line highlighting + magic-move; each cites `path:line`.
+- [x] Per-slide presenter notes carry the transcript excerpt for sync timing.
+- [x] `slides/timings.json` maps slide index → transcript timestamp.
+- [x] `npm run build` passes; `npm run dev` serves the deck.
 
-## Phase 3 — Render slides to frames/video
+## Phase 3 — Render slides to frames/video ✅ (mux needs ffmpeg)
 
-- [ ] `slidev export` deck → PDF and/or PNG-per-slide.
-- [ ] Build a slide-video track (slides advancing on the `timings.json` cues),
-      e.g. ffmpeg concat of per-slide PNGs held for each timed interval.
+- [x] `slidev export --format png` → `build/slides/*.png` (17 slides, verified).
+- [x] `scripts/render-slide-track.mjs` — reads `timings.json`, computes per-slide
+      durations (splitting shared-timestamp spans), writes `build/slides.concat.txt`,
+      and renders `build/slide-track.mp4` via ffmpeg concat.
+- [ ] Run the ffmpeg mux — **blocked: ffmpeg not installed in this env**
+      (`brew install ffmpeg`, then re-run the script; the concat file is already written).
 
-## Phase 4 — Splice over the speaker video
+## Phase 4 — Splice over the speaker video (scripted; needs ffmpeg + video)
 
+- [x] `scripts/splice.mjs` — ffmpeg composite: slide track full-frame + speaker PiP
+      (configurable corner/scale/margin), speaker audio preserved, aligned via shared 00:00.
 - [ ] Obtain the speaker video (YouTube `hY279-A2fC4`) — confirm rights/usage.
-- [ ] Composite layout: speaker as picture-in-picture corner, slides full-frame
-      (or side-by-side). Decide layout (see open questions).
-- [ ] ffmpeg overlay: slide track as base, speaker `scale`+`overlay` PiP, original
-      audio from the talk preserved; align via `timings.json`.
-- [ ] Export final MP4 (1080p), spot-check sync at each section boundary.
+- [ ] Run `node scripts/splice.mjs <speaker-video.mp4>` → `build/final.mp4`.
+- [ ] Spot-check sync at each section boundary.
 
 ## Phase 5 — Polish & ship
 
 - [ ] Review transitions and any spots where the speaker references the screen.
-- [ ] Publish deck (Slidev static build) + final video; link both from README.
+- [ ] Publish deck (`slidev build` static site) + final video; link both from README.
 - [ ] (Per the tweet) optionally assign follow-ups to @kitlangton in Jira. 😄
 
 ---
