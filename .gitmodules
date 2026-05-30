@@ -1,0 +1,6 @@
+[submodule ".context/opencode"]
+	path = .context/opencode
+	url = https://github.com/sst/opencode
+[submodule ".context/effect-v4"]
+	path = .context/effect-v4
+	url = https://github.com/Effect-TS/effect-smol
