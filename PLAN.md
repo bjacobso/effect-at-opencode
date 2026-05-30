@@ -60,21 +60,22 @@ Bonus found while freezing: the OTel "annotate with a string" pattern is literal
 - [x] `slides/timings.json` maps slide index → transcript timestamp.
 - [x] `npm run build` passes; `npm run dev` serves the deck.
 
-## Phase 3 — Render slides to frames/video ✅ (mux needs ffmpeg)
+## Phase 3 — Render slides to frames/video ✅
 
 - [x] `slidev export --format png` → `build/slides/*.png` (17 slides, verified).
 - [x] `scripts/render-slide-track.mjs` — reads `timings.json`, computes per-slide
       durations (splitting shared-timestamp spans), writes `build/slides.concat.txt`,
-      and renders `build/slide-track.mp4` via ffmpeg concat.
-- [ ] Run the ffmpeg mux — **blocked: ffmpeg not installed in this env**
-      (`brew install ffmpeg`, then re-run the script; the concat file is already written).
+      and renders the slide track via ffmpeg concat.
+- [x] Rendered `build/slide-track.mp4` — 1920×1080, **26:10** (matches talk length).
 
-## Phase 4 — Splice over the speaker video (scripted; needs ffmpeg + video)
+## Phase 4 — Splice over the speaker video ✅ pipeline verified (needs real video)
 
 - [x] `scripts/splice.mjs` — ffmpeg composite: slide track full-frame + speaker PiP
       (configurable corner/scale/margin), speaker audio preserved, aligned via shared 00:00.
-- [ ] Obtain the speaker video (YouTube `hY279-A2fC4`) — confirm rights/usage.
-- [ ] Run `node scripts/splice.mjs <speaker-video.mp4>` → `build/final.mp4`.
+- [x] **Verified end-to-end** against a synthetic stand-in clip → produced a
+      1920×1080 composite with audio and the PiP overlay in the corner.
+- [ ] Obtain the real speaker video (YouTube `hY279-A2fC4`) — confirm rights/usage.
+      Then: `node scripts/splice.mjs <speaker-video.mp4>` → `build/final.mp4`.
 - [ ] Spot-check sync at each section boundary.
 
 ## Phase 5 — Polish & ship
